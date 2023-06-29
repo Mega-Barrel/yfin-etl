@@ -1,0 +1,8 @@
+# package folder
+etlyf/
+
+# cred file
+.env
+
+# pycache folder
+__pycache__*
