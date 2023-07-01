@@ -1,6 +1,7 @@
 """Yfin ETL Component"""
 import pandas as pd
 import yfinance as yf
+from yfin.common.sqlite import YfinDB
 
 class YfinETL():
     """
@@ -15,12 +16,14 @@ class YfinETL():
     ):
         """
         Constructor for YfinTransformer
-        
+
         :param symbol: Stock ticker name
         """
         self.symbol = symbol
         self.start_date = start_date
         self.end_date = end_date
+        # Creating YfinDB object
+        self.ticker_db = YfinDB()
 
     def extract(self):
         """
@@ -28,10 +31,16 @@ class YfinETL():
         """
         try:
             # Get new data from yfin
-            ticker_df = yf.download(self.symbol, interval='1mo', threads=True).reset_index()
+            ticker_df = yf.download(
+                self.symbol,
+                start = self.start_date,
+                end = self.end_date,
+                interval='1d',
+                threads=True
+            ).reset_index()
             return ticker_df
         except: # pylint: disable=W0702
-            return 'Invalid Ticker name.'
+            print('Invalid Ticker name passed')
 
     def transform(self, data_frame: pd.DataFrame):
         """
@@ -47,8 +56,8 @@ class YfinETL():
             return data_frame
         print('Applying transformations to yfin source data')
         data_frame['% Change'] = round(
-            data_frame['Adj Close'] / data_frame['Adj Close'].shift(1) - 1, 
-            2
+            data_frame['Adj Close'] / data_frame['Adj Close'].shift(1) - 1,
+            4
         )
         return data_frame
 
@@ -59,17 +68,30 @@ class YfinETL():
         :param data_frame: Pandas DataFrame as a Input
         """
         # Connection to PostgreSQL DB
-        print(data_frame)
-        # return data_frame
+        if data_frame.empty:
+            print('Empty DataFrame.')
+            print('Skipping data load operation')
+        else:
+            try:
+                # If table exists append to the new data to table
+                self.ticker_db.insert_ticker(self.symbol, data_frame)
+                print(f"Ticker: {self.symbol} data inserted successfully!")
+            except: # pylint: disable=W0702
+                # Print Error message
+                print('Error occured while performing load operation')
 
     def etl_report(self):
         """
         Call the Extract, transform, and load method for ticker
         """
-        # Extraction
-        data_frame = self.extract()
-        # Apply transformation
-        data_frame = self.transform(data_frame=data_frame)
-        # Load the data to DB
-        self.load(data_frame=data_frame)
-        return True
+        try:
+            # Extraction
+            data_frame = self.extract()
+            # Apply transformation
+            data_frame = self.transform(data_frame=data_frame)
+            # Load the data to DB
+            self.load(data_frame=data_frame)
+            return True
+        except: # pylint: disable=W0702
+            print('One or more parameter entered wrong!!')
+            print('Check your input')
