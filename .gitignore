@@ -6,3 +6,6 @@ etlyf/
 
 # pycache folder
 __pycache__*
+
+# VS Code file
+.vscode
