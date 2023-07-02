@@ -1,6 +1,6 @@
 """Yfin PostgreSQL Component"""
 import sqlite3
-import pandas as pd
+import pandas as pd # pylint: disable=E0401
 
 class YfinDB():
     """
