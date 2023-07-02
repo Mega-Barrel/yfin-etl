@@ -1,6 +1,6 @@
 """Yfin ETL Component"""
-import pandas as pd
-import yfinance as yf
+import pandas as pd     # pylint: disable=E0401
+import yfinance as yf   # pylint: disable=E0401
 from yfin.common.sqlite import YfinDB
 
 class YfinETL():
