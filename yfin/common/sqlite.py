@@ -41,7 +41,6 @@ class YfinDB():
             print(error)
             print('Error while performing inserting operation')
 
-    # TODO: Add max_date filter to download latest data
     def get_max_date(self, ticker_name: str):
         """
         Get's the last/max date for the ticker specified
