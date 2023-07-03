@@ -1,4 +1,6 @@
 """Yfin ETL Component"""
+from datetime import timedelta, datetime
+
 import pandas as pd     # pylint: disable=E0401
 import yfinance as yf   # pylint: disable=E0401
 from yfin.common.sqlite import YfinDB
@@ -24,6 +26,8 @@ class YfinETL():
         self.end_date = end_date
         # Creating YfinDB object
         self.ticker_db = YfinDB()
+        self.prev_dt = self.start_date + ' 00:00:00'
+        self.prev_date = datetime.strptime(self.prev_dt, '%Y-%m-%d %H:%M:%S') - timedelta(1)
 
     def extract(self):
         """
@@ -33,7 +37,7 @@ class YfinETL():
             # Get new data from yfin
             ticker_df = yf.download(
                 self.symbol,
-                start = self.start_date,
+                start = self.prev_date,
                 end = self.end_date,
                 interval='1d',
                 threads=True
@@ -59,7 +63,8 @@ class YfinETL():
             data_frame['Adj Close'] / data_frame['Adj Close'].shift(1) - 1,
             4
         )
-        return data_frame
+        # Filtering the data_frame to get data from start_date
+        return data_frame[data_frame.Date > self.prev_date]
 
     def load(self, data_frame: pd.DataFrame) -> None:
         """
@@ -92,6 +97,7 @@ class YfinETL():
             # Load the data to DB
             self.load(data_frame=data_frame)
             return True
-        except: # pylint: disable=W0702
+        except Exception as error: # pylint: disable=W0718
             print('One or more parameter entered wrong!!')
+            print(error)
             print('Check your input')
