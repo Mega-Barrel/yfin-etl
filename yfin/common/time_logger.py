@@ -1,9 +1,10 @@
 """Yfin time function logger"""
 
 import time
+import logging
 from typing import Any
 
-class CodeTime(object):
+class CodeTime():
     """
     CodeTime class to log function execution time/seconds
     """
@@ -12,6 +13,7 @@ class CodeTime(object):
         self.function = func
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        logging.info('Logging started for CodeTime class')
         start = time.time()
         ret_fun = self.function(*args, **kwargs)
         fun_name = self.function.__name__
