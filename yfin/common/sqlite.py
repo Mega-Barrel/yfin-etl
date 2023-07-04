@@ -1,6 +1,5 @@
 """Yfin PostgreSQL Component"""
 import sqlite3
-import pandas as pd # pylint: disable=E0401
 
 class YfinDB():
     """
@@ -40,18 +39,4 @@ class YfinDB():
         except Exception as error: # pylint: disable=W0718
             print(error)
             print('Error while performing inserting operation')
-
-    def get_max_date(self, ticker_name: str):
-        """
-        Get's the last/max date for the ticker specified
-        
-        :param ticker_name: Ticker name
-        """
-        query = f"""
-            SELECT
-                MAX(Date)
-            FROM
-                {ticker_name}
-        """
-        max_date = pd.read_sql(query, self._engine).values[0][0]
-        return max_date
+            return False
