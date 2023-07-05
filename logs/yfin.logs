@@ -1,0 +1,39 @@
+yfin Transformer - 2023-07-05 19:40:46,047 - main - INFO - Process Started for function: main 
+yfin Transformer - 2023-07-05 19:40:46,047 - __init__ - INFO - Created connection with DB..
+yfin Transformer - 2023-07-05 19:40:46,047 - etl_report - INFO - Process started for function: etl_report..
+yfin Transformer - 2023-07-05 19:40:46,047 - etl_report - INFO - extract function called!
+yfin Transformer - 2023-07-05 19:40:46,047 - extract - INFO - Process started for function: extract..
+yfin Transformer - 2023-07-05 19:40:46,047 - extract - INFO - Extracting data from Date: 2020-01-01 to                 Date: 2023-05-31 for ticker: AAPL
+yfin Transformer - 2023-07-05 19:40:46,047 - wrapper - DEBUG - Entering download()
+yfin Transformer - 2023-07-05 19:40:46,047 - download - DEBUG - Disabling multithreading because DEBUG logging enabled
+yfin Transformer - 2023-07-05 19:40:46,047 - wrapper - DEBUG -  Entering history()
+yfin Transformer - 2023-07-05 19:40:46,095 - history - DEBUG - AAPL: Yahoo GET parameters: {'period1': '2020-01-01 00:00:00-05:00', 'period2': '2023-05-31 00:00:00-04:00', 'interval': '1d', 'includePrePost': False, 'events': 'div,splits,capitalGains'}
+yfin Transformer - 2023-07-05 19:40:46,095 - _new_conn - DEBUG - Starting new HTTPS connection (1): query2.finance.yahoo.com:443
+yfin Transformer - 2023-07-05 19:40:46,667 - _make_request - DEBUG - https://query2.finance.yahoo.com:443 "GET /v8/finance/chart/AAPL?period1=1577854800&period2=1685505600&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains HTTP/1.1" 200 None
+yfin Transformer - 2023-07-05 19:40:47,221 - history - DEBUG - AAPL: yfinance received OHLC data: 2020-01-02 14:30:00 -> 2023-05-30 13:30:00
+yfin Transformer - 2023-07-05 19:40:47,221 - history - DEBUG - AAPL: OHLC after cleaning: 2020-01-02 09:30:00-05:00 -> 2023-05-30 09:30:00-04:00
+yfin Transformer - 2023-07-05 19:40:47,236 - history - DEBUG - AAPL: OHLC after combining events: 2020-01-02 00:00:00-05:00 -> 2023-05-30 00:00:00-04:00
+yfin Transformer - 2023-07-05 19:40:47,251 - history - DEBUG - AAPL: yfinance returning OHLC: 2020-01-02 00:00:00-05:00 -> 2023-05-30 00:00:00-04:00
+yfin Transformer - 2023-07-05 19:40:47,251 - wrapper - DEBUG -  Exiting history()
+yfin Transformer - 2023-07-05 19:40:47,251 - wrapper - DEBUG - Exiting download()
+yfin Transformer - 2023-07-05 19:40:47,251 - extract - INFO - Process completed for function: extract..
+yfin Transformer - 2023-07-05 19:40:47,251 - wrapper - INFO - Function extract took 1.2 seconds to run
+yfin Transformer - 2023-07-05 19:40:47,251 - etl_report - INFO - transform function called!
+yfin Transformer - 2023-07-05 19:40:47,251 - transform - INFO - Process started for function: transform..
+yfin Transformer - 2023-07-05 19:40:47,251 - transform - INFO - Applying transformations to yfin source data
+yfin Transformer - 2023-07-05 19:40:47,251 - transform - INFO - Process completed for function: transform..
+yfin Transformer - 2023-07-05 19:40:47,251 - wrapper - INFO - Function transform took 0.0 seconds to run
+yfin Transformer - 2023-07-05 19:40:47,251 - etl_report - INFO - load function called!
+yfin Transformer - 2023-07-05 19:40:47,251 - load - INFO - Process started for function: load..
+yfin Transformer - 2023-07-05 19:40:47,251 - load - INFO - Loading AAPL data into DB.
+yfin Transformer - 2023-07-05 19:40:47,251 - insert_ticker_data - INFO - Process started for function: insert_ticker_data..
+yfin Transformer - 2023-07-05 19:40:47,282 - insert_ticker_data - INFO - Data Inserted to AAPL Table.
+yfin Transformer - 2023-07-05 19:40:47,282 - insert_ticker_data - INFO - Process completed for function: connect..
+yfin Transformer - 2023-07-05 19:40:47,282 - wrapper - INFO - Function insert_ticker_data took 0.03 seconds to run
+yfin Transformer - 2023-07-05 19:40:47,282 - load - INFO - Ticker: AAPL data inserted successfully!
+yfin Transformer - 2023-07-05 19:40:47,282 - load - INFO - Process completed for function: load..
+yfin Transformer - 2023-07-05 19:40:47,282 - wrapper - INFO - Function load took 0.03 seconds to run
+yfin Transformer - 2023-07-05 19:40:47,282 - etl_report - INFO - Process completed for function: etl_report..
+yfin Transformer - 2023-07-05 19:40:47,282 - wrapper - INFO - Function etl_report took 1.23 seconds to run
+yfin Transformer - 2023-07-05 19:40:47,282 - main - INFO - Process Completed for funtion: main
+yfin Transformer - 2023-07-05 19:40:47,282 - wrapper - INFO - Function main took 1.23 seconds to run
