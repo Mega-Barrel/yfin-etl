@@ -1,5 +1,8 @@
 """Yfin PostgreSQL Component"""
+
 import sqlite3
+from yfin.common.time_logger import time_it
+from yfin.common.yfin_logger import logger
 
 class YfinDB():
     """
@@ -10,33 +13,30 @@ class YfinDB():
         """
         Initialize _db and _cursor
         """
-        self._engine = self.connect()
+        logger.info('Created connection with DB..')
+        self._engine = sqlite3.connect('db/ticker.db')
 
-    def connect(self):
-        """
-        returns PG connection object
-        """
-        # create and return PG engine
-        print('Connection created')
-        return sqlite3.connect('db/ticker.db')
-
-    def insert_ticker(self, table_name, data_frame):
+    @time_it
+    def insert_ticker_data(self, table_name, data_frame):
         """
         Insert ticker DataFrame to sqlite table
 
-        :param table_name: Pandas DataFrame
-        :param data_frame: Ticker price data
+        :param table_name: Table name
+        :param data_frame: Pandas data_frame
         """
         try:
+            logger.info('Process started for function: insert_ticker_data..')
             data_frame.to_sql(
                 table_name,
                 self._engine,
                 if_exists='append',
                 index=False
             )
-            print(f'Data Inserted to {table_name} Table.')
+            logger.info('Data Inserted to %s Table.', table_name)
             return True
         except Exception as error: # pylint: disable=W0718
-            print(error)
-            print('Error while performing inserting operation')
+            logger.error('Error occured while inserting data')
+            logger.error(error)
             return False
+        finally:
+            logger.info('Process completed for function: connect..')
