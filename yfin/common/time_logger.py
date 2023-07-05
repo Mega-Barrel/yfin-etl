@@ -1,23 +1,22 @@
 """Yfin time function logger"""
 
 import time
-import logging
-from typing import Any
+from yfin.common.yfin_logger import logger
 
-class CodeTime():
+def time_it(func):
     """
-    CodeTime class to log function execution time/seconds
+    Get total time a module ran
     """
 
-    def __init__(self, func):
-        self.function = func
-
-    def __call__(self, *args: Any, **kwargs: Any) -> Any:
-        logging.info('Logging started for CodeTime class')
-        start = time.time()
-        ret_fun = self.function(*args, **kwargs)
-        fun_name = self.function.__name__
-        end = time.time()
-
-        print(f'Function {fun_name} took {round(end - start, 2)} seconds to run')
-        return ret_fun
+    def wrapper(*args, **kwargs):
+        """"
+        Wrapper class
+        """
+        start_time = time.time()
+        func_name = func.__name__
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        message = f'Function {func_name} took {round(end_time - start_time, 2)} seconds to run'
+        logger.info(message)
+        return result
+    return wrapper
