@@ -1,4 +1,4 @@
-"""Yfin PostgreSQL Component"""
+"""Yfin SQLite Component"""
 
 import sqlite3
 from yfin.common.time_logger import time_it
